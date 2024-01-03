@@ -10,3 +10,8 @@ def index():
 @app.get('/about')
 def about():
     return "Ai Vision Project"
+
+
+@app.get('/blog/{id}')
+def getId(id : int):
+    return {"data": id}
