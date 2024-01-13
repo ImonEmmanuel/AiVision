@@ -1,5 +1,5 @@
-import database as dbp
-from hash import Hash
+import infrastructure.database as dbp
+from infrastructure.hash import Hash
 
 
 async def login_check(Idnumber : str, password : str):

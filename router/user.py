@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-import database as dbp
-from model import BaseResponseModel, SignUp
+import infrastructure.database as dbp
+from infrastructure.model import BaseResponseModel, SignUp
 from auth.oauth2 import get_user_details, oauth2_schema
 
 router = APIRouter(

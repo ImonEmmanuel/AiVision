@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Optional
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
-import database as db
+import infrastructure.database as db
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
 
@@ -47,8 +47,3 @@ async def get_user_details(token : str = Depends(oauth2_schema)):
     raise credentials_exception
   
   return user
-    
-
-
-
-  pass

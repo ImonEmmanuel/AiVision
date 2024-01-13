@@ -22,12 +22,12 @@ This is a simple FastAPI backend API with endpoints for user authentication and 
    cd AiVision
 
    
-   ```Install dependencies
+Install dependencies
 
     pip install -r requirements.txt
     Run the FastAPI app:
 
-    ```bash
+    ``` bash
     uvicorn main:app --reload
 
 Contributing

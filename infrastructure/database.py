@@ -1,9 +1,8 @@
-import hashlib
 from fastapi import HTTPException 
 import pypyodbc as odbc
-from model import Login, SignUp
+from infrastructure.model import SignUp
 from uuid import uuid4
-from hash import Hash
+from infrastructure.hash import Hash
 
 DRIVER_NAME = "SQL SERVER"
 SERVER_NAME  = "Emmanuel"

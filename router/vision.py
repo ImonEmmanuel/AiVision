@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from auth.oauth2 import get_user_details
-from model import BaseResponseModel, SignUp
+from infrastructure.model import BaseResponseModel, SignUp
 
 
 router = APIRouter(

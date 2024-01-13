@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, status
-import database as dbp
-from model import BaseResponseModel, Login, SignUp
-import service as ser
-from model import BaseResponseModel, SignUp
+import infrastructure.database as dbp
+from infrastructure.model import BaseResponseModel, Login, SignUp
+import infrastructure.service as ser
+from infrastructure.model import BaseResponseModel, SignUp
 from auth.authdata import oauth2
 
 router = APIRouter(

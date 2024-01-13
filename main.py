@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import database as dbp
-from model import BaseResponseModel
+import infrastructure.database as dbp
+from infrastructure.model import BaseResponseModel
 from router import authentication, vision, user
 from auth import authdata
 
