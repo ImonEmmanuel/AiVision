@@ -3,18 +3,17 @@ import pypyodbc as odbc
 from infrastructure.model import SignUp
 from uuid import uuid4
 from infrastructure.hash import Hash
-
-DRIVER_NAME = "SQL SERVER"
-SERVER_NAME  = "Emmanuel"
-DATABASE_NAME = "model"
+from config import SERVER_NAME, DATABASE_NAME, USERNAME, PASSWORD, DRIVER_NAME
 
 
 connection_string = f"""
         DRIVER={DRIVER_NAME};
         SERVER={SERVER_NAME};
         DATABASE={DATABASE_NAME};
-        Trusted_Connection=yes;
+        UID={USERNAME};
+        PWD={PASSWORD};
 """
+
 
 # **Helper functions (example implementations):**
 async def check_if_user_exist(id_number):
@@ -23,7 +22,7 @@ async def check_if_user_exist(id_number):
     cursor = conn.cursor()
     query = f"""
         SELECT [Id],[Firstname], [Lastname], [Idnumber], [Password]
-        FROM [model].[dbo].[newuser]
+        FROM [aivision-db].[dbo].[User]
         WHERE [Idnumber] = '{id_number}';            
         """
     cursor.execute(query)
@@ -40,7 +39,7 @@ async def create_user(req : SignUp):
     conn = odbc.connect(connection_string)
     cursor = conn.cursor()
     query = f"""
-            INSERT INTO [model].[dbo].[newuser] ([Id], [Firstname], [Lastname], [Idnumber], [Password])
+            INSERT INTO [aivision-db].[dbo].[User] ([Id], [Firstname], [Lastname], [Idnumber], [Password])
             VALUES 
             ('{uuid4().hex}', '{req.FirstName}', '{req.LastName}', '{req.IdNumber}', '{req.Password}')
             """
@@ -55,7 +54,7 @@ async def delete_user(user_id):
         conn = odbc.connect(connection_string)
         cursor = conn.cursor()
         # Execute the DELETE query
-        query = f"DELETE FROM [model].[dbo].[newuser] WHERE [Idnumber] = '{user_id}';"
+        query = f"DELETE FROM [aivision-db].[dbo].[newuser] WHERE [Idnumber] = '{user_id}';"
         cursor.execute(query)
         conn.commit()
         cursor.close()
@@ -76,7 +75,7 @@ async def get_userinfo(id_number: str):
         cursor = conn.cursor()
         query = f"""
             SELECT [Firstname], [Lastname], [Idnumber], [Password]
-            FROM [model].[dbo].[newuser]
+            FROM [aivision-db].[dbo].[User]
             WHERE [Idnumber] = '{id_number}';            
             """
         cursor.execute(query)
