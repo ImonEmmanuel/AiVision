@@ -3,7 +3,7 @@ import pypyodbc as odbc
 from infrastructure.model import SignUp
 from uuid import uuid4
 from infrastructure.hash import Hash
-from config import SERVER_NAME, DATABASE_NAME, USERNAME, PASSWORD, DRIVER_NAME
+from databaseconfig import SERVER_NAME, DATABASE_NAME, USERNAME, PASSWORD, DRIVER_NAME
 
 
 connection_string = f"""

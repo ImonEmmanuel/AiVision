@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\auth",
+    "\\infrastructure",
+    "\\router"
+  ],
+  "SelectedNode": "\\infrastructure\\database.py",
+  "PreviewInSolutionExplorer": false
+}
