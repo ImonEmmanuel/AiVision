@@ -1,6 +1,7 @@
 import string
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from auth.oauth2 import get_user_details
+from infrastructure.aimodel import predict_image
 from infrastructure.model import BaseResponseModel, SignUp
 from infrastructure.service import create_image_folder, delete_file, is_image_file
 
@@ -12,11 +13,12 @@ router = APIRouter(
 
 
 @router.post('/UploadImage', response_model= BaseResponseModel)
-def upload_image(image: UploadFile = File(...), current_user : SignUp  = Depends(get_user_details)):
+async def upload_image(image: UploadFile = File(...), current_user : SignUp  = Depends(get_user_details)):
     if is_image_file(image.filename):
         message = f"{image.filename} was successfully Uploaded and processing for AI Detection"
         statuss = True
         data = create_image_folder(image)
+        #prediction = await predict_image(image)
         _ = delete_file(data['filename'])
         return {"data": data, "message": message, "status": statuss}
     else:
