@@ -1,6 +1,6 @@
 from fastapi import HTTPException 
 import pypyodbc as odbc
-from infrastructure.model import SignUp
+from infrastructure.model import SignUp, UserModel
 from uuid import uuid4
 from infrastructure.hash import Hash
 from databaseconfig import SERVER_NAME, DATABASE_NAME, USERNAME, PASSWORD, DRIVER_NAME
@@ -94,5 +94,35 @@ async def get_userinfo(id_number: str):
         # Map the query result into the Pydantic model
         user_model = SignUp(**dict(zip(SignUp.__annotations__.keys(), user_data)))
         return user_model
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving user: {str(e)}")
+    
+
+async def get_all_user():
+    try:
+        # Establish a connection and execute the query
+        conn = odbc.connect(connection_string)
+        cursor = conn.cursor()
+        query = f"""
+            SELECT [Id],[Firstname], [Lastname], [Idnumber]
+            FROM [aivision-db].[dbo].[User];            
+            """
+        cursor.execute(query)
+        
+        user_data = cursor.fetchall()
+        
+        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+
+        if user_data is None:
+            raise HTTPException(status_code=404, detail=f"Error while Processing")
+        
+        # Map the query result into the Pydantic model
+        list_user = []
+        for data_user in user_data:
+            user_model = UserModel(**dict(zip(UserModel.__annotations__.keys(), data_user)))
+            list_user.append(user_model)
+        return list_user
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving user: {str(e)}")

@@ -9,6 +9,7 @@ class SignUp(BaseModel):
     Password : str
 
 class UserModel(BaseModel):
+    Id : str
     FirstName : str
     LastName : str
     IdNumber : str

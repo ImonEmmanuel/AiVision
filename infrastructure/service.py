@@ -13,14 +13,6 @@ async def login_check(Idnumber : str, password : str):
     resp = Hash.verify_password(hashed_password=user.Password, plain_password=password) #True Password match
     return (resp, user)
 
-async def generate_session_token():
-    """Generates a secure session token."""
-    pass
-async def set_session_token(token, user_id):
-    """Stores the session token in session storage."""
-    # Replace with your session storage mechanism
-    pass
-
 def is_image_file(filename):
     image_extensions = ['jpg', 'jpeg', 'png', 'gif','tiff']
     # Get the file extension from the filename
@@ -37,7 +29,6 @@ def create_image_folder(image_data: UploadFile = File(...)):
 
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(image_data.file, buffer)
-
     return {"filename": path}
 
 def delete_file(file_path: str):
