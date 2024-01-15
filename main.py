@@ -1,11 +1,10 @@
 
-import PIL
-from fastapi import Depends, FastAPI, HTTPException, UploadFile
+import uvicorn
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from router import authentication, vision, user
 from auth import authdata
-from fastai.learner import load_learner
 
 app = FastAPI(title="AI Vison Backend Version 1")
 
@@ -28,78 +27,7 @@ def label_func(fname):
     category = fname.parts[-2]  # Extract the category name from the path
     return category if category in labels else "unknown"
 
-labels = ['Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6', 'Class_6',
-       'Class_6', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1', 'Class_1',
-       'Class_1', 'Class_1', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_2',
-       'Class_2', 'Class_2', 'Class_2', 'Class_2', 'Class_5', 'Class_5',
-       'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5',
-       'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5',
-       'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5',
-       'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5',
-       'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_5', 'Class_7',
-       'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7',
-       'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7',
-       'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_7',
-       'Class_7', 'Class_7', 'Class_7', 'Class_7', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4', 'Class_4',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3',
-       'Class_3', 'Class_3', 'Class_3', 'Class_3', 'Class_3']
+labels = ["Class_1", "Class_2", "Class_3", "Class_4", "Class_5", "Class_6", "Class_7", "Class_8"]
 
 if __name__ == "__main__":
     import uvicorn
