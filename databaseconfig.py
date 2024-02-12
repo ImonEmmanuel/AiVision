@@ -1,6 +1,6 @@
-SERVER_NAME  = "emmanuel-db.cvse6lfv0she.us-east-1.rds.amazonaws.com,1433"
+SERVER_NAME  = "Emmanuel\\NEWSQLSERVER"
 DATABASE_NAME = "aivision-db"
-USERNAME = "admin"
-PASSWORD = "Vivian123"
+USERNAME = "sa"
+PASSWORD = "123456789"
 DRIVER_NAME = "SQL SERVER"
 

@@ -25,13 +25,13 @@ classes_dict_values = [
 
 
 @router.get('/list_of_available_image', response_model= BaseResponseModel)
-def get_available_image(current_user : SignUp  = Depends(get_user_details)):
+def get_available_image():
     message = f"List of Images"
     statuss = True
     return {"data": classes_dict_values, "message": message, "status": statuss}
 
 @router.post('/UploadImage', response_model= BaseResponseModel)
-async def predict_image_test(file: UploadFile, current_user : SignUp  = Depends(get_user_details)):
+async def predict_image_test(file: UploadFile):
     try:
         result = await predict_image(file)
         message = f"{file.filename} was successfully Uploaded and processing for AI Detection"
